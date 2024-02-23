@@ -1,0 +1,9 @@
+.idea
+.vscode
+.gitignore
+.prettierignore
+
+node_modules
+
+dist
+build
