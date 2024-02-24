@@ -16,8 +16,6 @@ export class DefaultCommandBus<TCommand extends Command, TResult> implements Com
 			throw new Error(`No handler registered for ${command.constructor.name}`);
 		}
 
-		const res = this.registry.get(command.constructor as Class<TCommand>);
-		console.log(res);
 		return commandHandler.handle(command);
 	}
 

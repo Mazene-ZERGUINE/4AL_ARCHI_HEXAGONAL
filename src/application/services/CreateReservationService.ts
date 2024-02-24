@@ -8,6 +8,7 @@ import { ReservationId } from '../../domain/reservation/ReservationId';
 import { CreateReservationPort } from '../ports/out/CreateReservationPort';
 import { EventDispatcher } from '../../kernel/event/EventDispatcher';
 import { ReservationCreatedEvent } from '../events/ReservationCreatedEvent';
+import { ReservationException } from '../../domain/reservation/ReservationException';
 
 export class CreateReservationService implements CommandHandler<CreateReservationCommand, Reservation> {
 	private createReservationPort: CreateReservationPort;
@@ -24,6 +25,10 @@ export class CreateReservationService implements CommandHandler<CreateReservatio
 		const reservationId = ReservationId.of(randomId);
 		const reservationStatus = ReservationStatus.CONFIRMED;
 		const facture = Facture.of(randomUUID(), command.formule.price, command.client, command.creneau.date);
+
+		if (!command.creneau.isAvailable) {
+			throw new ReservationException('crenau non disponible');
+		}
 
 		const reservation = new Reservation(
 			reservationId,

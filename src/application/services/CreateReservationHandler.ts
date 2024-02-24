@@ -4,13 +4,11 @@ import { EventDispatcher } from '../../kernel/event/EventDispatcher';
 import { CreatePaymentEvent } from '../events/CreatePaymentEvent';
 
 export class CreateReservationHandler implements EventHandler<ReservationCreatedEvent> {
-	private readonly eventDispatcher: EventDispatcher<CreatePaymentEvent>;
-
-	constructor(eventDispatcher: EventDispatcher<CreatePaymentEvent>) {
-		this.eventDispatcher = eventDispatcher;
-	}
+	constructor() {}
 
 	handle(event: ReservationCreatedEvent): void {
-		this.eventDispatcher.dispatch(new CreatePaymentEvent(event.reservation.client, event.reservation));
+		console.log(`reservation ${event.reservation.reservationId.id} saved`);
+
+		console.log('you wille be sent to payement ....');
 	}
 }

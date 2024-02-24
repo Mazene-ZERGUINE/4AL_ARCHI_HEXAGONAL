@@ -3,7 +3,7 @@ import { ReservationId } from '../../domain/reservation/ReservationId';
 import { Reservation } from '../../domain/reservation/Reservation';
 
 export class ReservationRepository implements CreateReservationPort {
-	private reservationList: Map<ReservationId, Reservation>;
+	reservationList: Map<ReservationId, Reservation>;
 
 	constructor() {
 		this.reservationList = new Map<ReservationId, Reservation>();

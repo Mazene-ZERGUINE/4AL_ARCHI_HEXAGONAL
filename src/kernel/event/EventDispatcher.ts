@@ -4,5 +4,5 @@ import { EventHandler } from './EventHandler';
 
 export interface EventDispatcher<TEvent extends Event> {
 	dispatch(event: TEvent): void;
-	register(eventClass: string, handler: EventHandler<TEvent>): void;
+	register(eventClass: new (...args: any[]) => TEvent, eventHandler: EventHandler<TEvent>): void;
 }
