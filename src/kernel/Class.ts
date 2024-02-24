@@ -1,5 +1,1 @@
-export interface Class<T> {
-	class: {
-		new (...args: any[]): T;
-	};
-}
+export type Class<T> = new (...args: any[]) => T;
