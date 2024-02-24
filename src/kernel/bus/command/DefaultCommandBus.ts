@@ -24,4 +24,8 @@ export class DefaultCommandBus<TCommand extends Command, TResult> implements Com
 			this.registry.set(commandClass, commandHandler);
 		}
 	}
+
+	getRegister(): Map<Class<TCommand>, CommandHandler<TCommand, TResult>> {
+		return this.registry;
+	}
 }

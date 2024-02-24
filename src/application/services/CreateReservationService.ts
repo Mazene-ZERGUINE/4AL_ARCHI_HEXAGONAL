@@ -43,6 +43,7 @@ export class CreateReservationService implements CommandHandler<CreateReservatio
 		);
 
 		this.createReservationPort.save(reservation);
+
 		this.eventDispatcher.dispatch(new ReservationCreatedEvent(reservation));
 
 		return reservation;
