@@ -24,8 +24,10 @@ export class App {
 		this.commandeBus = BusFactory.defaultCommandBus();
 		this.commandeBus.register(
 			CreateReservationCommand,
-			new CreateReservationService(new ReservationRepository(new Map()), DefaultEventDispatcher.create()),
+			new CreateReservationService(new ReservationRepository(), DefaultEventDispatcher.create()),
 		);
+
+		console.log(this.commandeBus);
 	}
 
 	static registerQueries() {
