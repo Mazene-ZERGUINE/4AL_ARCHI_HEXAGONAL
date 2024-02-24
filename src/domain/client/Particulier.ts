@@ -1,37 +1,28 @@
-import {Client} from "./Client";
-import {ClientId} from "./ClientId";
-import {DossierClient} from "./DossierClient";
-import {Reservation} from "../reservation/Reservation";
+import { Client } from './Client';
+import { ClientId } from './ClientId';
+import { DossierClient } from './DossierClient';
 
 export class Particulier implements Client {
+	private readonly _clientId: ClientId;
 
-    private readonly _clientId: ClientId;
+	private readonly _dossierClient: DossierClient;
 
-    private readonly _dossierClient:DossierClient;
+	constructor(clientId: ClientId, dossierClient: DossierClient) {
+		this._clientId = clientId;
+		this._dossierClient = dossierClient;
+	}
 
+	cancelReservation(): any {}
 
-    constructor(clientId: ClientId, dossierClient: DossierClient) {
-        this._clientId = clientId;
-        this._dossierClient = dossierClient;
-    }
+	createReservation(): any {}
 
-    cancelReservation(): any {
-    }
+	updateReservation(): any {}
 
-    createReservation(): any {
+	get clientId(): ClientId {
+		return this._clientId;
+	}
 
-    }
-
-    updateReservation(): any {
-    }
-
-
-    get clientId(): ClientId {
-        return this._clientId;
-    }
-
-    get dossierClient(): DossierClient {
-        return this._dossierClient;
-    }
+	get dossierClient(): DossierClient {
+		return this._dossierClient;
+	}
 }
-

@@ -1,21 +1,20 @@
+import { UUID } from 'crypto';
+
 export class ClientId {
+	_id: UUID;
+	private constructor(id: UUID) {
+		this._id = id;
+	}
 
-    _id: string;
-    private constructor( id: string ) {
-        this._id = id;
-    }
+	static of(id: UUID) {
+		return new ClientId(id);
+	}
 
-    static of(id: string) {
-        return new ClientId(id);
-    }
+	get id(): string {
+		return this._id;
+	}
 
-    get id(): string {
-        return this._id;
-    }
-
-    equals( other: ClientId ) {
-        return this._id === other.id;
-    }
-
+	equals(other: ClientId) {
+		return this._id === other.id;
+	}
 }
-

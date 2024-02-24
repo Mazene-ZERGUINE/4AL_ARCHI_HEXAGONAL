@@ -1,21 +1,25 @@
+import { UUID } from 'crypto';
+
 export class Service {
-    get type(): string {
-        return this._type;
-    }
+	private readonly _id: UUID;
+	private readonly _type: string;
+	private readonly _contractor: string;
 
-    get contractor(): string {
-        return this._contractor;
-    }
+	constructor(id: UUID, type: string, contractor: string) {
+		this._id = id;
+		this._type = type;
+		this._contractor = contractor;
+	}
 
-    private _type: string;
+	get id(): UUID {
+		return this._id;
+	}
 
-    private _contractor: string;
+	get type(): string {
+		return this._type;
+	}
 
-
-    constructor(type: string, contractor: string) {
-        this._type = type;
-        this._contractor = contractor;
-    }
-
-
+	get contractor(): string {
+		return this._contractor;
+	}
 }
