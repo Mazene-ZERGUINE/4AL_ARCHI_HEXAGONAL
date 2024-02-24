@@ -9,7 +9,7 @@ export class BusFactory {
 
 	static defaultCommandBus(): CommandBus<Command, void> {
 		// return new DefaultCommandBus<Command, void>(new Map());
-		return new DefaultCommandBus(new Map());
+		return new DefaultCommandBus();
 	}
 
 	// static defaultQueryBus(): QueryBus {
