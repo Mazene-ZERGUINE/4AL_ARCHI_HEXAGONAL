@@ -14,13 +14,13 @@ export class DefaultEventDispatcher<TEvent extends Event> implements EventDispat
 		return new DefaultEventDispatcher<Event>(new Map());
 	}
 
-	dispatch(event: TEvent) {
+	dispatch(event: TEvent): void {
 		const eventHandler = this.registry.get(event.constructor as Class<TEvent>);
 		if (!eventHandler) {
 			throw new Error(`No handler registered for ${event.constructor.name}`);
 		}
 
-		return eventHandler.handle(event);
+		eventHandler.handle(event);
 	}
 
 	register(eventClass: Class<TEvent>, eventHandler: EventHandler<TEvent>): void {
