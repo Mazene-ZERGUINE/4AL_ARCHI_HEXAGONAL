@@ -4,17 +4,18 @@ import { Class } from '../Class';
 import { Event } from './Event';
 
 export class DefaultEventDispatcher<TEvent extends Event> implements EventDispatcher<TEvent> {
-	private readonly registry: Map<new (...args: any[]) => TEvent, EventHandler<TEvent>>;
+	private readonly registry: Map<Class<TEvent>, EventHandler<TEvent>>;
 
-	constructor() {
-		this.registry = new Map();
+	constructor(registry: Map<Class<TEvent>, EventHandler<TEvent>>) {
+		this.registry = registry;
 	}
 
 	static create(): DefaultEventDispatcher<Event> {
-		return new DefaultEventDispatcher<Event>();
+		return new DefaultEventDispatcher<Event>(new Map());
 	}
+
 	dispatch(event: TEvent) {
-		const eventHandler = this.registry.get(event.constructor as new (...args: any[]) => TEvent);
+		const eventHandler = this.registry.get(event.constructor as Class<TEvent>);
 		if (!eventHandler) {
 			throw new Error(`No handler registered for ${event.constructor.name}`);
 		}
@@ -22,8 +23,7 @@ export class DefaultEventDispatcher<TEvent extends Event> implements EventDispat
 		return eventHandler.handle(event);
 	}
 
-	// Class<TEvent>
-	register(eventClass: new (...args: any[]) => TEvent, eventHandler: EventHandler<TEvent>): void {
+	register(eventClass: Class<TEvent>, eventHandler: EventHandler<TEvent>): void {
 		if (!this.registry.has(eventClass)) {
 			this.registry.set(eventClass, eventHandler);
 		}
