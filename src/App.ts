@@ -27,24 +27,13 @@ export class App {
 	static start() {
 		console.log('🚀 App started.');
 		this.registerEventHandlersAndCommandsAndQueries();
+		this.test();
 	}
 
 	static registerEventHandlersAndCommandsAndQueries() {
 		this.registerEventHandlers();
 		this.registerCommands();
 		this.registerQueries();
-
-		const entreprise = new Entreprise(
-			ClientId.of(randomUUID()),
-			DossierClient.of('', '', '', '', PaymentMethod.BANK_CARD, '', []),
-		);
-
-		const reservationController = new ReservationController(this.commandBus);
-		const creneau = Creneau.of(new Date(), new Date(), new Date('24-02-2024'));
-		const fromule = Formule.of(randomUUID(), '', '', 100);
-		const centre = new CentreSportif(CentreSportifId.of(randomUUID()), '', '', '', '', '', '');
-		const activity = new Activite(randomUUID(), '', '');
-		reservationController.create(creneau, fromule, centre, activity, entreprise.clientId, []);
 	}
 
 	static registerCommands() {
@@ -64,5 +53,19 @@ export class App {
 
 	static registerQueries() {
 		// REGISTER TOUTES LES QUERIES
+	}
+
+	static test() {
+		const entreprise = new Entreprise(
+			ClientId.of(randomUUID()),
+			DossierClient.of('', '', '', '', PaymentMethod.BANK_CARD, '', []),
+		);
+
+		const reservationController = new ReservationController(this.commandBus);
+		const creneau = Creneau.of(new Date(), new Date(), new Date('24-02-2024'));
+		const fromule = Formule.of(randomUUID(), '', '', 100);
+		const centre = new CentreSportif(CentreSportifId.of(randomUUID()), '', '', '', '', '', '');
+		const activity = new Activite(randomUUID(), '', '');
+		reservationController.create(creneau, fromule, centre, activity, entreprise.clientId, []);
 	}
 }
