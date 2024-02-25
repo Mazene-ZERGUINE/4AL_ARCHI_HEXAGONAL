@@ -19,18 +19,18 @@ import { PaymentMethod } from './domain/client/PaymentMethod';
 import { Event } from './kernel/event/Event';
 import { ReservationCreatedEvent } from './application/events/ReservationCreatedEvent';
 import { CreateReservationHandler } from './application/services/CreateReservationHandler';
-import { CreateReservationPort } from './application/ports/out/CreateReservationPort';
 
 export class App {
-	private static commandeBus: CommandBus<Command, void>;
+	private static commandBus: CommandBus<Command, void>;
 	private static eventDispatcher: DefaultEventDispatcher<Event>;
 
 	static start() {
 		console.log('🚀 App started.');
-		this.registerCommandsAndQueriesAndEventHandlers();
+		this.registerEventHandlersAndCommandsAndQueries();
 	}
 
-	static registerCommandsAndQueriesAndEventHandlers() {
+	static registerEventHandlersAndCommandsAndQueries() {
+		this.registerEventHandlers();
 		this.registerCommands();
 		this.registerQueries();
 
@@ -39,7 +39,7 @@ export class App {
 			DossierClient.of('', '', '', '', PaymentMethod.BANK_CARD, '', []),
 		);
 
-		const reservationController = new ReservationController(this.commandeBus);
+		const reservationController = new ReservationController(this.commandBus);
 		const creneau = Creneau.of(new Date(), new Date(), new Date('24-02-2024'));
 		const fromule = Formule.of(randomUUID(), '', '', 100);
 		const centre = new CentreSportif(CentreSportifId.of(randomUUID()), '', '', '', '', '', '');
@@ -48,14 +48,18 @@ export class App {
 	}
 
 	static registerCommands() {
-		this.eventDispatcher = DefaultEventDispatcher.create();
-		this.eventDispatcher.register(ReservationCreatedEvent, new CreateReservationHandler());
+		this.commandBus = BusFactory.defaultCommandBus();
 
-		this.commandeBus = BusFactory.defaultCommandBus();
-		this.commandeBus.register(
+		this.commandBus.register(
 			CreateReservationCommand,
 			new CreateReservationService(new ReservationRepository(), this.eventDispatcher),
 		);
+	}
+
+	static registerEventHandlers() {
+		this.eventDispatcher = DefaultEventDispatcher.create();
+
+		this.eventDispatcher.register(ReservationCreatedEvent, new CreateReservationHandler());
 	}
 
 	static registerQueries() {
