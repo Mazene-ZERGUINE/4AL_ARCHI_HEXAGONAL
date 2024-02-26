@@ -32,4 +32,11 @@ export class Formule {
 	get price(): number {
 		return this._price;
 	}
+
+	toString(): string {
+		const idStr = this._id.toString();
+		const priceStr = `$${this._price.toFixed(2)}`;
+
+		return `Formula ID: ${idStr}, Name: ${this._name}, Description: ${this._description}, Price: ${priceStr}`;
+	}
 }

@@ -22,4 +22,9 @@ export class Service {
 	get contractor(): string {
 		return this._contractor;
 	}
+
+	toString(): string {
+		const idStr = this._id.toString();
+		return `Service ID: ${idStr}, Type: ${this._type}, Contractor: ${this._contractor}`;
+	}
 }

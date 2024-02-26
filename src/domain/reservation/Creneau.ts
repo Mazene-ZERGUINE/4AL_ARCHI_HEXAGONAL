@@ -40,4 +40,13 @@ export class Creneau {
 		const difference = this._endTime.getTime() - this._startTime.getTime();
 		return difference / 1000 / 60 / 60;
 	}
+
+	toString(): string {
+		const dateStr = this._date.getFullYear() + '/' + this._date.getMonth() + '/' + this._date.getDate();
+		const startTimeStr = this._startTime.getHours() + ': ' + this.startTime.getMinutes();
+		const endTimeStr = this._endTime.getHours() + ':' + this._endTime.getMinutes();
+		const availabilityStr = this._isAvailable ? 'Available' : 'Not Available';
+
+		return `Date: ${dateStr}, Start Time: ${startTimeStr}, End Time: ${endTimeStr}, Availability: ${availabilityStr}`;
+	}
 }

@@ -36,4 +36,11 @@ export class Facture {
 	get date(): Date {
 		return this._date;
 	}
+	toString(): string {
+		const dateStr = this._date.toISOString().split('T')[0];
+		const clientIdStr = this._client.id;
+		const priceStr = `$${this._price.toFixed(2)}`;
+
+		return `Invoice ID: ${this._id.toString()}, Client ID: ${clientIdStr}, Date: ${dateStr}, Price: ${priceStr}`;
+	}
 }

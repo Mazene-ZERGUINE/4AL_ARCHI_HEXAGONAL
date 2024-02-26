@@ -23,6 +23,7 @@ import { CreateReservationHandler } from './application/services/CreateReservati
 export class App {
 	private static commandBus: CommandBus<Command, void>;
 	private static eventDispatcher: DefaultEventDispatcher<Event>;
+	private static reservationRepository: ReservationRepository;
 
 	static start() {
 		console.log('🚀 App started.');
@@ -31,9 +32,10 @@ export class App {
 	}
 
 	static registerEventHandlersAndCommandsAndQueries() {
+		this.reservationRepository = new ReservationRepository();
+
 		this.registerEventHandlers();
 		this.registerCommands();
-		this.registerQueries();
 	}
 
 	static registerCommands() {
@@ -41,7 +43,7 @@ export class App {
 
 		this.commandBus.register(
 			CreateReservationCommand,
-			new CreateReservationService(new ReservationRepository(), this.eventDispatcher),
+			new CreateReservationService(this.reservationRepository, this.eventDispatcher),
 		);
 	}
 
@@ -49,10 +51,6 @@ export class App {
 		this.eventDispatcher = DefaultEventDispatcher.create();
 
 		this.eventDispatcher.register(ReservationCreatedEvent, new CreateReservationHandler());
-	}
-
-	static registerQueries() {
-		// REGISTER TOUTES LES QUERIES
 	}
 
 	static test() {
@@ -67,5 +65,11 @@ export class App {
 		const centre = new CentreSportif(CentreSportifId.of(randomUUID()), '', '', '', '', '', '');
 		const activity = new Activite(randomUUID(), '', '');
 		reservationController.create(creneau, fromule, centre, activity, entreprise.clientId, []);
+
+		const reservations = this.reservationRepository.getAll();
+
+		for (let [key, value] of reservations.entries()) {
+			console.log(`reservation [ ${key.id} : ${value} ]`);
+		}
 	}
 }

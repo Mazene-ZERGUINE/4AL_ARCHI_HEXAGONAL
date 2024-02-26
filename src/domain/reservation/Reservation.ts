@@ -76,4 +76,12 @@ export class Reservation {
 	get centreSportif(): CentreSportif {
 		return this._centreSportif;
 	}
+
+	toString(): string {
+		return `Reservation ID: ${this._reservationId.toString()}\n Status: ${
+			this._status
+		}, \nCreneau: ${this._creneau.toString()}, \nFormule: ${this._formule.toString()}, \n Facture: ${this._facture.toString()}, \nCentre Sportif: ${this._centreSportif.toString()},\n Activite: ${this._activite.toString()}, Client ID: ${
+			this._client.id
+		}, Services: [${this._services.map((service) => service.toString()).join(', ')}]`;
+	}
 }
