@@ -1,1 +1,3 @@
-console.log('app is running');
+import { App } from './App';
+
+App.start();
