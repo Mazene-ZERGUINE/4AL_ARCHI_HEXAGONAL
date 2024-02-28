@@ -19,6 +19,8 @@ import { PaymentMethod } from './domain/client/PaymentMethod';
 import { Event } from './kernel/event/Event';
 import { ReservationCreatedEvent } from './application/events/ReservationCreatedEvent';
 import { CreateReservationHandler } from './application/services/CreateReservationHandler';
+import { CreatePaymentEvent } from './application/events/CreatePaymentEvent';
+import { CreatePaymentHandler } from './application/services/CreatePaymentHandler';
 
 export class App {
 	private static commandBus: CommandBus<Command, void>;
@@ -50,7 +52,8 @@ export class App {
 	static registerEventHandlers() {
 		this.eventDispatcher = DefaultEventDispatcher.create();
 
-		this.eventDispatcher.register(ReservationCreatedEvent, new CreateReservationHandler());
+		this.eventDispatcher.register(ReservationCreatedEvent, new CreateReservationHandler(this.eventDispatcher));
+		this.eventDispatcher.register(CreatePaymentEvent, new CreatePaymentHandler());
 	}
 
 	static test() {
@@ -61,15 +64,34 @@ export class App {
 
 		const reservationController = new ReservationController(this.commandBus);
 		const creneau = Creneau.of(new Date(), new Date(), new Date('24-02-2024'));
-		const fromule = Formule.of(randomUUID(), '', '', 100);
-		const centre = new CentreSportif(CentreSportifId.of(randomUUID()), '', '', '', '', '', '');
-		const activity = new Activite(randomUUID(), '', '');
+		const fromule = Formule.of(randomUUID(), 'formule 1', 'avec prestation', 100);
+		const centre = new CentreSportif(
+			CentreSportifId.of(randomUUID()),
+			'Massy',
+			'6 rue christoph colomb',
+			'91300',
+			'Massy',
+			'000000',
+			'email@gmail.fr',
+		);
+		const activity = new Activite(randomUUID(), 'Foot', '???');
+
+		const creneau2 = Creneau.of(new Date(), new Date(), new Date('29-02-2024'));
+		const fromule2 = Formule.of(randomUUID(), 'formule 2', 'avec prestation', 100);
+		const centre2 = new CentreSportif(
+			CentreSportifId.of(randomUUID()),
+			'Massy',
+			'6 rue christoph colomb',
+			'91300',
+			'Massy',
+			'000000',
+			'email@gmail.fr',
+		);
+		const activity2 = new Activite(randomUUID(), 'basbal', '???');
+
 		reservationController.create(creneau, fromule, centre, activity, entreprise.clientId, []);
+		reservationController.create(creneau2, fromule2, centre2, activity2, entreprise.clientId, []);
 
-		const reservations = this.reservationRepository.getAll();
-
-		for (let [key, value] of reservations.entries()) {
-			console.log(`reservation [ ${key.id} : ${value} ]`);
-		}
+		//const reservations = this.reservationRepository.getAll();
 	}
 }
