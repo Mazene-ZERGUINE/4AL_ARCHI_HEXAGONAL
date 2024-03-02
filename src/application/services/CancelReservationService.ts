@@ -37,9 +37,9 @@ export class CancelReservationService implements CommandHandler<CancelReservatio
 
 		const differenceInHours = differenceInMs / (1000 * 60 * 60);
 
-		if (differenceInHours < 2) {
-			throw new ReservationException("reservation can't be cancelled");
-		}
+		//if (differenceInHours < 2) {
+		//throw new ReservationException("reservation can't be cancelled");
+		//}
 
 		exist.creneau.isAvailable = true;
 		this.deleteReservationPort.delete(command.reservationId);

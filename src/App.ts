@@ -107,5 +107,11 @@ export class App {
 		console.log(`cancling reservation  ${reservation2.reservationId.id}`);
 
 		reservationController.cancel(reservation2.reservationId);
+
+		const reservationsAfterRemove = this.reservationRepository.getAll();
+		console.log(`${reservationsAfterRemove.size} reservation found for client`);
+		reservationsAfterRemove.forEach((reservation, id) => {
+			console.log(`${id}: ${reservation}`);
+		});
 	}
 }
