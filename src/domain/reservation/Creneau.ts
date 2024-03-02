@@ -3,7 +3,7 @@ export class Creneau {
 	private readonly _startTime: Date;
 	private readonly _endTime: Date;
 
-	private readonly _isAvailable: boolean;
+	private _isAvailable: boolean;
 
 	private constructor(date: Date, startTime: Date, endTime: Date, isAvailable: boolean) {
 		this._date = date;
@@ -34,6 +34,10 @@ export class Creneau {
 
 	get isAvailable(): boolean {
 		return this._isAvailable;
+	}
+
+	set isAvailable(isAvailable: boolean) {
+		this._isAvailable = isAvailable;
 	}
 
 	getDurationInHours() {
