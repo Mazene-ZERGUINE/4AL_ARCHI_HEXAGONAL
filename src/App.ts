@@ -2,7 +2,7 @@ import { CommandBus } from './kernel/bus/command/CommandBus';
 import { BusFactory } from './kernel/bus/BusFactory';
 import { Command } from './kernel/bus/command/Command';
 import { CreateReservationService } from './application/services/CreateReservationService';
-import { CreateReservationCommand } from './application/ports/in/CreateReservationCommand';
+import { CreateReservationCommend } from './application/ports/in/CreateReservationCommend';
 import { ReservationRepository } from './adapters/out/ReservationRepository';
 import { DefaultEventDispatcher } from './kernel/event/DefaultEventDispatcher';
 import { ReservationController } from './adapters/in/ReservationController';
@@ -21,6 +21,10 @@ import { ReservationCreatedEvent } from './application/events/ReservationCreated
 import { CreateReservationHandler } from './application/services/CreateReservationHandler';
 import { CreatePaymentEvent } from './application/events/CreatePaymentEvent';
 import { CreatePaymentHandler } from './application/services/CreatePaymentHandler';
+import { ReservationDeletedEvent } from './application/events/ReservationDeletedEvent';
+import { CancelReservationHandler } from './application/services/CancelReservationHandler';
+import { CancelReservationCommand } from './application/ports/in/CancelReservationCommande';
+import { CancelReservationService } from './application/services/CancelReservationService';
 
 export class App {
 	private static commandBus: CommandBus<Command, void>;
@@ -44,8 +48,13 @@ export class App {
 		this.commandBus = BusFactory.defaultCommandBus();
 
 		this.commandBus.register(
-			CreateReservationCommand,
+			CreateReservationCommend,
 			new CreateReservationService(this.reservationRepository, this.eventDispatcher),
+		);
+
+		this.commandBus.register(
+			CancelReservationCommand,
+			new CancelReservationService(this.eventDispatcher, this.reservationRepository, this.reservationRepository),
 		);
 	}
 
@@ -54,15 +63,15 @@ export class App {
 
 		this.eventDispatcher.register(ReservationCreatedEvent, new CreateReservationHandler(this.eventDispatcher));
 		this.eventDispatcher.register(CreatePaymentEvent, new CreatePaymentHandler());
+		this.eventDispatcher.register(ReservationDeletedEvent, new CancelReservationHandler());
 	}
 
 	static test() {
-		const entreprise = new Entreprise(
-			ClientId.of(randomUUID()),
-			DossierClient.of('', '', '', '', PaymentMethod.BANK_CARD, '', []),
-		);
-
+		const entrepriseId = ClientId.of(randomUUID());
+		const entreprise = new Entreprise(entrepriseId, DossierClient.of('', '', '', '', PaymentMethod.BANK_CARD, '', []));
 		const reservationController = new ReservationController(this.commandBus);
+
+		// reservation 1 //
 		const creneau = Creneau.of(new Date(), new Date(), new Date('24-02-2024'));
 		const fromule = Formule.of(randomUUID(), 'formule 1', 'avec prestation', 100);
 		const centre = new CentreSportif(
@@ -76,6 +85,7 @@ export class App {
 		);
 		const activity = new Activite(randomUUID(), 'Foot', '???');
 
+		// reservation 2
 		const creneau2 = Creneau.of(new Date(), new Date(), new Date('29-02-2024'));
 		const fromule2 = Formule.of(randomUUID(), 'formule 2', 'avec prestation', 100);
 		const centre2 = new CentreSportif(
@@ -92,6 +102,10 @@ export class App {
 		reservationController.create(creneau, fromule, centre, activity, entreprise.clientId, []);
 		reservationController.create(creneau2, fromule2, centre2, activity2, entreprise.clientId, []);
 
-		//const reservations = this.reservationRepository.getAll();
+		const reservation2 = this.reservationRepository.getByClient(entrepriseId)[1];
+		console.log('--------------------------------------');
+		console.log(`cancling reservation  ${reservation2.reservationId.id}`);
+
+		reservationController.cancel(reservation2.reservationId);
 	}
 }

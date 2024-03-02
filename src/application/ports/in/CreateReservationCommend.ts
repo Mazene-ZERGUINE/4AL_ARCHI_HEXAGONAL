@@ -6,7 +6,7 @@ import { Activite } from '../../../domain/centre-sportif/Activite';
 import { Service } from '../../../domain/reservation/Service';
 import { ClientId } from '../../../domain/client/ClientId';
 
-export class CreateReservationCommand implements Command {
+export class CreateReservationCommend implements Command {
 	private readonly _creneau: Creneau;
 	private readonly _formule: Formule;
 	private readonly _centreSportif: CentreSportif;

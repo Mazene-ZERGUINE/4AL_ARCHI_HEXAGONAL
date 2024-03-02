@@ -6,8 +6,10 @@ import { Formule } from '../../domain/reservation/Formule';
 import { CentreSportif } from '../../domain/centre-sportif/CentreSportif';
 import { Activite } from '../../domain/centre-sportif/Activite';
 import { UUID } from 'crypto';
-import { CreateReservationCommand } from '../../application/ports/in/CreateReservationCommand';
+import { CreateReservationCommend } from '../../application/ports/in/CreateReservationCommend';
 import { ClientId } from '../../domain/client/ClientId';
+import { ReservationId } from '../../domain/reservation/ReservationId';
+import { CancelReservationCommand } from '../../application/ports/in/CancelReservationCommande';
 
 export class ReservationController {
 	private readonly commandBus: CommandBus<Command, void>;
@@ -24,6 +26,10 @@ export class ReservationController {
 		client: ClientId,
 		services: Array<Service> = [],
 	): void {
-		this.commandBus.post(new CreateReservationCommand(creneau, formule, centreSportif, activite, client, services));
+		this.commandBus.post(new CreateReservationCommend(creneau, formule, centreSportif, activite, client, services));
+	}
+
+	cancel(reservationId: ReservationId) {
+		this.commandBus.post(new CancelReservationCommand(reservationId));
 	}
 }

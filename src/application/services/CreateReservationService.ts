@@ -1,5 +1,5 @@
 import { CommandHandler } from '../../kernel/bus/command/CommandHandler';
-import { CreateReservationCommand } from '../ports/in/CreateReservationCommand';
+import { CreateReservationCommend } from '../ports/in/CreateReservationCommend';
 import { Reservation } from '../../domain/reservation/Reservation';
 import { randomUUID } from 'crypto';
 import { ReservationStatus } from '../../domain/reservation/ReservationStatus';
@@ -10,7 +10,7 @@ import { EventDispatcher } from '../../kernel/event/EventDispatcher';
 import { ReservationCreatedEvent } from '../events/ReservationCreatedEvent';
 import { ReservationException } from '../../domain/reservation/ReservationException';
 
-export class CreateReservationService implements CommandHandler<CreateReservationCommand, Reservation> {
+export class CreateReservationService implements CommandHandler<CreateReservationCommend, Reservation> {
 	private createReservationPort: CreateReservationPort;
 
 	private eventDispatcher: EventDispatcher<ReservationCreatedEvent>;
@@ -20,7 +20,7 @@ export class CreateReservationService implements CommandHandler<CreateReservatio
 		this.eventDispatcher = eventDispatcher;
 	}
 
-	handle(command: CreateReservationCommand): Reservation {
+	handle(command: CreateReservationCommend): Reservation {
 		const randomId = randomUUID();
 		const reservationId = ReservationId.of(randomId);
 		const reservationStatus = ReservationStatus.CONFIRMED;
