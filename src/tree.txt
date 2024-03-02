@@ -1,0 +1,67 @@
+.
+├── App.ts
+├── adapters
+│   ├── in
+│   │   └── ReservationController.ts
+│   └── out
+│       ├── EmailNotifier.ts
+│       ├── InvoiceService.ts
+│       └── ReservationRepository.ts
+├── application
+│   ├── events
+│   │   ├── CreatePaymentEvent.ts
+│   │   ├── ReservationCreatedEvent.ts
+│   │   └── ReservationDeletedEvent.ts
+│   ├── ports
+│   │   ├── in
+│   │   │   ├── CancelReservationCommande.ts
+│   │   │   └── CreateReservationCommend.ts
+│   │   └── out
+│   │       ├── CreateReservationPort.ts
+│   │       ├── DeleteReservationPort.ts
+│   │       ├── GetReservationPort.ts
+│   │       ├── Invoice.ts
+│   │       └── Notification.ts
+│   └── services
+│       ├── CancelReservationHandler.ts
+│       ├── CancelReservationService.ts
+│       ├── CreatePaymentHandler.ts
+│       ├── CreateReservationHandler.ts
+│       └── CreateReservationService.ts
+├── domain
+│   ├── centre-sportif
+│   │   ├── Activite.ts
+│   │   ├── CentreSportif.ts
+│   │   └── CentreSportifId.ts
+│   ├── client
+│   │   ├── Client.ts
+│   │   ├── ClientId.ts
+│   │   ├── DossierClient.ts
+│   │   ├── Entreprise.ts
+│   │   ├── Particulier.ts
+│   │   └── PaymentMethod.ts
+│   └── reservation
+│       ├── Creneau.ts
+│       ├── Facture.ts
+│       ├── Formule.ts
+│       ├── Reservation.ts
+│       ├── ReservationException.ts
+│       ├── ReservationId.ts
+│       ├── ReservationStatus.ts
+│       └── Service.ts
+├── kernel
+│   ├── Class.ts
+│   ├── bus
+│   │   ├── BusFactory.ts
+│   │   └── command
+│   │       ├── Command.ts
+│   │       ├── CommandBus.ts
+│   │       ├── CommandHandler.ts
+│   │       └── DefaultCommandBus.ts
+│   └── event
+│       ├── DefaultEventDispatcher.ts
+│       ├── Event.ts
+│       ├── EventDispatcher.ts
+│       └── EventHandler.ts
+├── main.ts
+
